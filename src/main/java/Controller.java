@@ -1,11 +1,5 @@
-package sample;
-
 import javafx.fxml.FXML;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
@@ -13,10 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Controller {
-
-    /*
-        Attribute
-         */
+    /**
+     * * Attribute
+    */
     private DatenbankZugriff dz;
     public Label number;
     public ComboBox anlagen;
@@ -41,6 +34,6 @@ public class Controller {
 
     public void leseDaten(ActionEvent actionEvent) {
         System.out.println(anlagen.getSelectionModel().getSelectedIndex()+1);
-
+        //TODO
     }
 }
