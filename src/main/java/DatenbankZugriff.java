@@ -11,20 +11,13 @@ public class DatenbankZugriff {
     /**
      * * Constructor
      */
-    private DatenbankZugriff() {
+    private DatenbankZugriff(String user, String passwd) throws SQLException {
         /**
          * * Verbindung zur Datenbank wird erstellt
          */
         String url = "jdbc:mysql://localhost:3306/schulli?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
-        String user = "root";
-        String password = "root";
 
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            stmt = con.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        con = DriverManager.getConnection(url, user, passwd);
     }
 
     /**
@@ -32,11 +25,29 @@ public class DatenbankZugriff {
      *
      * @return gibt eine Instance der Klasse zurück
      */
-    public static DatenbankZugriff getInstance() {
+    public static DatenbankZugriff getInstance() throws SQLException {
+        return DatenbankZugriff.instance;
+    }
+
+    /**
+     * * Ausgabe der Instance
+     *
+     * @return gibt eine Instance der Klasse zurück
+     */
+    public static DatenbankZugriff getInstance(String user, String passwd) throws SQLException {
         if (DatenbankZugriff.instance == null) {
-            DatenbankZugriff.instance = new DatenbankZugriff();
+            DatenbankZugriff.instance = new DatenbankZugriff(user, passwd);
         }
         return DatenbankZugriff.instance;
+    }
+
+    /**
+     * * Erstellen des Statements
+     */
+    public void setStatements() throws SQLException {
+        if (this.stmt == null) {
+            stmt = con.createStatement();
+        }
     }
 
     /**
@@ -54,7 +65,7 @@ public class DatenbankZugriff {
      * * Lesen aus der Datenbank
      *
      * @param value_arr angaben der zu zuregebenden Werten
-     * @param database angabe der Tabelle
+     * @param database  angabe der Tabelle
      * @return zurückgabe der gefunden Werte
      * @throws SQLException Fehler wenn flasche Werte übergeben werden
      */
@@ -75,7 +86,7 @@ public class DatenbankZugriff {
     /**
      * * Aufbereitung des String Arrays zu einem String
      *
-     * @param str der zu bearbeiten String
+     * @param str       der zu bearbeiten String
      * @param delimiter Trennzeichen
      * @return Rückgabe des aufbereiteten String
      */
