@@ -7,6 +7,7 @@ public class DatenbankZugriff {
     private Connection con;
     private static DatenbankZugriff instance;
     private Statement stmt;
+    private ResultSet rs;
 
     /**
      * * Constructor
@@ -15,7 +16,7 @@ public class DatenbankZugriff {
         /**
          * * Verbindung zur Datenbank wird erstellt
          */
-        String url = "jdbc:mysql://localhost:3306/schulli?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
+        String url = "jdbc:mysql://raspberrypi/schulli?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
 
         con = DriverManager.getConnection(url, user, passwd);
     }
@@ -72,7 +73,7 @@ public class DatenbankZugriff {
     public ResultSet fkt_Lesen(String[] value_arr, String database) throws SQLException {
         String select = getString(value_arr, ", ");
         String query = String.format("Select %s from %s", select, database);
-        ResultSet rs = stmt.executeQuery(query);
+        rs = stmt.executeQuery(query);
         return rs;
     }
 
@@ -80,7 +81,7 @@ public class DatenbankZugriff {
         String select = getString(value_arr, ", ");
         String query = String.format("Select %s from %s where %s", select, database, where);
         System.out.println(query);
-        ResultSet rs = stmt.executeQuery(query);
+        rs = stmt.executeQuery(query);
         return rs;
     }
 

@@ -1,8 +1,13 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,6 +24,7 @@ public class MainController {
     public TextField aktuellerStandField;
     public Button okButton;
     public Button changeButton;
+    public Button graphButton;
     public ComboBox<String> portfolio;
     public ProgressBar progressBar;
     public Label renditeLabel;
@@ -65,8 +71,10 @@ public class MainController {
         }
     }
 
-    public void viewtest(ListView.EditEvent<String> stringEditEvent) {
+    public void viewSelected(ListView.EditEvent<String> stringEditEvent) {
         anr = investmentList.getSelectionModel().getSelectedIndex() + 1;
+        Investments.getInstance(anr, pnr);
+
         String[] value_arr = {"aktueller_Stand", "rendite", "gewinn"};
         String database = "daten";
         String where = "anr = " + anr + " AND pnr = " + pnr + " order by lfdnr desc";
@@ -79,6 +87,29 @@ public class MainController {
             gewinnLabel.setText(String.format("Gewinn: %s€", String.valueOf(rs.getDouble(3))));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+    public void openGraph(ActionEvent actionEvent) {
+        if (anr == 0 || pnr == 0) {
+            JOptionPane.showMessageDialog(null, "Kein Investment gewählt", "Fehler", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("graph.fxml"));
+            Parent view = fxmlLoader.load();
+
+            GraphController graphController = fxmlLoader.<GraphController>getController();
+            graphController.setStage(stage);
+            graphController.setOldScene(stage.getScene());
+
+            stage.setScene(new Scene(view));
+            stage.setMaximized(true);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

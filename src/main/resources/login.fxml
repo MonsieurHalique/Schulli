@@ -33,18 +33,18 @@
                 <ImageView fitHeight="158.0" fitWidth="213.0" pickOnBounds="true" preserveRatio="true"
                            GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <image>
-                        <Image url="@bild.jpg"/>
+                        <Image url="@bild.png"/>
                     </image>
                 </ImageView>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1"
                       GridPane.rowIndex="1">
                     <children>
-                        <TextField fx:id="userField" onAction="#userEnter" promptText="User">
+                        <TextField fx:id="userField" onAction="#anmelden" promptText="User">
                             <VBox.margin>
                                 <Insets bottom="10.0"/>
                             </VBox.margin>
                         </TextField>
-                        <PasswordField fx:id="passwdField" onAction="#passwdEnter" promptText="Password">
+                        <PasswordField fx:id="passwdField" onAction="#anmelden" promptText="Password">
                             <VBox.margin>
                                 <Insets top="10.0"/>
                             </VBox.margin>
@@ -54,7 +54,7 @@
                 <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2"
                       GridPane.rowIndex="2">
                     <children>
-                        <Button fx:id="okButton" mnemonicParsing="false" onAction="#buttonOK" text="OK">
+                        <Button fx:id="okButton" mnemonicParsing="false" onAction="#anmelden" text="OK">
                             <HBox.margin>
                                 <Insets right="10.0"/>
                             </HBox.margin>

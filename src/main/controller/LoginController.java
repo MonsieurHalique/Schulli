@@ -29,7 +29,11 @@ public class LoginController {
     public void initialize() {
     }
 
-    private void fkt_Anmelden() {
+    @FXML
+    public void buttonChange(ActionEvent actionEvent) {
+    }
+
+    public void anmelden(ActionEvent actionEvent) {
         try {
             dz = DatenbankZugriff.getInstance(userField.getText(), passwdField.getText());
             dz.setStatements();
@@ -39,33 +43,14 @@ public class LoginController {
             MainController mainController = fxmlLoader.<MainController>getController();
             mainController.setStage(stage);
 
-
             stage.setScene(new Scene(view));
+            stage.centerOnScreen();
             stage.show();
         } catch (SQLException throwables) {
             JOptionPane.showMessageDialog(null, "Benutzer oder Passwort falsch", "Anmeldung Error", JOptionPane.WARNING_MESSAGE);
+            throwables.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void buttonOK(ActionEvent actionEvent) {
-        fkt_Anmelden();
-    }
-
-    @FXML
-    public void buttonChange(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void userEnter(ActionEvent actionEvent) {
-        fkt_Anmelden();
-    }
-
-    @FXML
-    public void passwdEnter(ActionEvent actionEvent) {
-        fkt_Anmelden();
     }
 }
