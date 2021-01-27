@@ -8,12 +8,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        int height = 400;
+        int width = 600;
         /**
          * * Aufbau der Scene
          */
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent root = fxmlLoader.load();
+
+        LoginController loginController = fxmlLoader.<LoginController>getController();
+        loginController.setStage(primaryStage);
+
         primaryStage.setTitle("Schulli");
-        primaryStage.setScene(new Scene(root, 1280, 1024));
+        primaryStage.setScene(new Scene(root, width, height));
+        primaryStage.setMinHeight(height);
+        primaryStage.setMinWidth(width);
         primaryStage.show();
     }
 
