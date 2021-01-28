@@ -18,8 +18,11 @@ public class MainController {
     private static DatenbankZugriff dz;
     private Stage stage;
 
+    private Investments investment;
     private int pnr = 0;
     private int anr = 0;
+    private int oldpnr = 0;
+    private int oldanr = 0;
 
     public TextField aktuellerStandField;
     public Button okButton;
@@ -40,11 +43,10 @@ public class MainController {
         try {
             dz = DatenbankZugriff.getInstance();
 
-            String[] value_arr = {"name"};
-            String database = "portfolio";
+            Schulli[] value_arr = {Portfolio.name};
 
             portfolio.setPromptText("Wähle Anlage!");
-            ResultSet rs = dz.fkt_Lesen(value_arr, database);
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.portfolio);
             while (rs.next()) {
                 portfolio.getItems().add(rs.getString(1));
             }
@@ -57,12 +59,16 @@ public class MainController {
         investmentList.getItems().clear();
 
         pnr = portfolio.getSelectionModel().getSelectedIndex() + 1;
-        String[] value_arr = {"name"};
-        String database = "investments";
-        String where = "pnr = " + pnr;
+        if (pnr != oldpnr) {
+            anr = 0;
+            oldpnr = pnr;
+        }
+
+        Schulli[] value_arr = {Investment.name};
+        String where = Investment.pnr + " = " + pnr;
 
         try {
-            ResultSet rs = dz.fkt_Lesen(value_arr, database, where);
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.investments, where);
             while (rs.next()) {
                 investmentList.getItems().add(rs.getString(1));
             }
@@ -74,20 +80,10 @@ public class MainController {
     public void viewSelected(ListView.EditEvent<String> stringEditEvent) {
         anr = investmentList.getSelectionModel().getSelectedIndex() + 1;
         Investments.getInstance(anr, pnr);
-
-        String[] value_arr = {"aktueller_Stand", "rendite", "gewinn"};
-        String database = "daten";
-        String where = "anr = " + anr + " AND pnr = " + pnr + " order by lfdnr desc";
-
-        try {
-            ResultSet rs = dz.fkt_Lesen(value_arr, database, where);
-            rs.next();
-            aktuellerStandField.setText(String.valueOf(rs.getDouble(1)));
-            renditeLabel.setText(String.format("Rendite: %s", String.valueOf(rs.getDouble(2) * 100)) + "%");
-            gewinnLabel.setText(String.format("Gewinn: %s€", String.valueOf(rs.getDouble(3))));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        setInvestment();
+        aktuellerStandField.setText(String.valueOf(Investments.getLastInstance().getAktuellerStand()));
+        renditeLabel.setText(String.format("Rendite: %s", Investments.getLastInstance().getRendite() * 100) + "%");
+        gewinnLabel.setText(String.format("Gewinn: %s€", Investments.getLastInstance().getGewinn()));
     }
 
     public void openGraph(ActionEvent actionEvent) {
@@ -106,6 +102,74 @@ public class MainController {
 
             stage.setScene(new Scene(view));
             stage.setMaximized(true);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setInvestment() {
+        setInvestmentPortfolio();
+        setInvestmentInvestments();
+        setInvestmentDaten();
+    }
+
+    private void setInvestmentPortfolio() {
+        Schulli[] value_arr = {Portfolio.name, Portfolio.einzahlung, Portfolio.aktueller_Stand};
+        String where = Portfolio.pnr + " = " + pnr;
+        try {
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.portfolio, where);
+            rs.next();
+            Investments.getLastInstance().setPortfolio(rs.getString(1), rs.getDouble(2), rs.getDouble(3));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    private void setInvestmentInvestments() {
+        Schulli[] value_arr = {Investment.name, Investment.einzahlung, Investment.art, Investment.strategie, Investment.anteile, Investment.sparrate, Investment.sparrate_wert, Investment.kosten, Investment.steuern};
+        String where = Investment.pnr + " = " + pnr + " and " + Investment.anr + " = " + anr;
+        try {
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.investments, where);
+            rs.next();
+            Art tmpArt = Art.valueOf(rs.getString(3));
+            Investments.getLastInstance().setInvestments(rs.getString(1), rs.getDouble(2), tmpArt, rs.getDouble(4), rs.getDouble(5), rs.getBoolean(6), rs.getDouble(7), rs.getDouble(8), rs.getDouble(9));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    private void setInvestmentDaten() {
+        Schulli[] value_arr = {Daten.aktueller_stand, Daten.gewinn, Daten.rendite, Daten.datum};
+        String where = Daten.anr + " = " + anr + " and " + Daten.pnr + " = " + pnr;
+        Schulli[] orderby = {Daten.lfdnr};
+
+        try {
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.daten, where, orderby, true);
+            rs.next();
+            Investments.getLastInstance().setDaten(rs.getDouble(1), rs.getDouble(2), rs.getDouble(3), rs.getDate(4));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void openEingabe(ActionEvent actionEvent) {
+        if (anr == 0 || pnr == 0) {
+            JOptionPane.showMessageDialog(null, "Kein Investment gewählt", "Fehler", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eingabe.fxml"));
+            Parent view = fxmlLoader.load();
+
+            EingabeController eingabeController = fxmlLoader.<EingabeController>getController();
+            eingabeController.setStage(stage);
+            eingabeController.setOldScene(stage.getScene());
+
+            stage.setScene(new Scene(view));
+            stage.setMaximized(false);
             stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {

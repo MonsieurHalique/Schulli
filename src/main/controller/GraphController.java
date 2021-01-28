@@ -47,16 +47,16 @@ public class GraphController {
             anr = Investments.getLastInstance().getAnr();
             pnr = Investments.getLastInstance().getPnr();
 
-            String[] value_arr = {"rendite", "gewinn", "datum"};
-            String database = "daten";
-            String where = "anr = " + anr + " AND pnr = " + pnr + " order by lfdnr asc";
+            Schulli[] value_arr = {Daten.rendite, Daten.gewinn, Daten.datum};
+            String where = Daten.anr + " = " + anr + " AND " + Daten.pnr + " = " + pnr;
+            Schulli[] orderby = {Daten.lfdnr};
 
             XYChart.Series seriesRendite = new XYChart.Series();
             XYChart.Series seriesGewinn = new XYChart.Series();
             seriesRendite.setName("Rendite");
             seriesGewinn.setName("Gewinn");
             try {
-                ResultSet rs = dz.fkt_Lesen(value_arr, database, where);
+                ResultSet rs = dz.fkt_Lesen(value_arr, Database.daten, where, orderby, false);
                 while (rs.next()) {
                     seriesRendite.getData().add(new XYChart.Data(rs.getString(3), rs.getDouble(1) * 100));
                     seriesGewinn.getData().add(new XYChart.Data(rs.getString(3), rs.getDouble(2)));

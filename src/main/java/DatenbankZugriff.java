@@ -70,17 +70,26 @@ public class DatenbankZugriff {
      * @return zurückgabe der gefunden Werte
      * @throws SQLException Fehler wenn flasche Werte übergeben werden
      */
-    public ResultSet fkt_Lesen(String[] value_arr, String database) throws SQLException {
+    public ResultSet fkt_Lesen(Schulli[] value_arr, Database database) throws SQLException {
         String select = getString(value_arr, ", ");
         String query = String.format("Select %s from %s", select, database);
         rs = stmt.executeQuery(query);
         return rs;
     }
 
-    public ResultSet fkt_Lesen(String[] value_arr, String database, String where) throws SQLException {
+    public ResultSet fkt_Lesen(Schulli[] value_arr, Database database, String where) throws SQLException {
         String select = getString(value_arr, ", ");
         String query = String.format("Select %s from %s where %s", select, database, where);
-        System.out.println(query);
+        rs = stmt.executeQuery(query);
+        return rs;
+    }
+
+    public ResultSet fkt_Lesen(Schulli[] value_arr, Database database, String where, Schulli[] order, boolean desc) throws SQLException {
+        String select = getString(value_arr, ", ");
+        String orderby = getString(order, ", ");
+        String query = String.format("Select %s from %s where %s order by %s", select, database, where, orderby);
+        if (desc)
+            query += " desc";
         rs = stmt.executeQuery(query);
         return rs;
     }
@@ -92,9 +101,9 @@ public class DatenbankZugriff {
      * @param delimiter Trennzeichen
      * @return Rückgabe des aufbereiteten String
      */
-    private String getString(String[] str, String delimiter) {
+    private String getString(Schulli[] str, String delimiter) {
         StringBuilder sb = new StringBuilder();
-        for (String s : str) {
+        for (Schulli s : str) {
             sb.append(s).append(delimiter);
         }
         return sb.substring(0, sb.length() - delimiter.length());
