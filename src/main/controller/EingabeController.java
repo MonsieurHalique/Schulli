@@ -21,6 +21,8 @@ public class EingabeController {
     public DatePicker datum;
     public Label gewinn;
     public Label rendite;
+    public Button uebernehmen;
+    public Button zurueck;
     private Stage stage;
     private Scene oldScene;
     private Investments investment;
@@ -32,6 +34,8 @@ public class EingabeController {
     public Label strategieLabel;
     public Label gesamtAnteil;
     public Label gesamtEinzahlung;
+
+    double aktuellerStand;
 
 
     public void setStage(Stage stage) {
@@ -51,7 +55,7 @@ public class EingabeController {
 
         anrNameLabel.setText(investment.getAnrName());
         artLabel.setText(String.valueOf(investment.getArt()));
-        if (investment.getArt() == Art.Robo) {
+        if (investment.getArt() == Art.Robo || investment.getArt() == Art.Tagesgeld) {
             oldAnteil.setVisible(false);
             newAnteileField.setVisible(false);
             gesamtAnteil.setVisible(false);
@@ -85,6 +89,33 @@ public class EingabeController {
         double gesamtAnteilValue = oldAnteilValue + newAnteilValue;
         gesamtAnteil.setText("Anteile: " + gesamtAnteilValue);
     }
+
+    public void speichernStand(ActionEvent actionEvent) {
+        if (investment.getArt() != Art.Robo && investment.getArt() != Art.Tagesgeld) {
+            aktuellerStand = Double.parseDouble(oldAnteil.getText()) * Double.parseDouble(newAktuelllerStand.getText());
+        }else{
+            aktuellerStand = Double.parseDouble(newAktuelllerStand.getText());
+        }
+
+        gewinn.setText(String.format("Gewinn: %s€", (aktuellerStand - Double.parseDouble(oldEinzahlung.getText()))));
+        rendite.setText(String.format("Rendite: %s", ((aktuellerStand / Double.parseDouble(oldEinzahlung.getText()) - 1 )* 100) + "%"));
+    }
+
+    public void uebernahme(ActionEvent actionEvent) {
+
+        //renditeValue an SQL (wird nicht benötigt)
+        //gewinnValue an SQL (wird nicht benötigt)
+        //aktuellerStand an SQL
+        //Datum übergeben
+        //newAnteil übergeben wenn >0 && art != "Robo" && art != "Tagesgeld"
+
+    }
+
+    public void back(ActionEvent actionEvent) {
+
+    }
+
+
 }
 
 
