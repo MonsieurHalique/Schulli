@@ -1,9 +1,8 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class EingabeController {
@@ -11,26 +10,29 @@ public class EingabeController {
      * * Attribute
      */
     private static DatenbankZugriff dz;
-   
-    
+
+
     public MenuItem back;
-    public Label old_Anteil;
-    public Label old_Einzahlung;
+    public Label oldAnteil;
+    public Label oldEinzahlung;
     public TextField newEinzahlung;
+    public TextField newAnteileField;
+    public TextField newAktuelllerStand;
+    public DatePicker datum;
+    public Label gewinn;
+    public Label rendite;
     private Stage stage;
     private Scene oldScene;
-
     private Investments investment;
-
     public Label pnrNameLabel;
     public Label einzahlungLabel;
     public Label gesStandLabel;
-
     public Label anrNameLabel;
     public Label artLabel;
     public Label strategieLabel;
-    public TextField einzahlungField;
-    public Label oldEinzahlungLabel;
+    public Label gesamtAnteil;
+    public Label gesamtEinzahlung;
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -49,11 +51,16 @@ public class EingabeController {
 
         anrNameLabel.setText(investment.getAnrName());
         artLabel.setText(String.valueOf(investment.getArt()));
-        if (investment.getArt() == Art.Robo)
+        if (investment.getArt() == Art.Robo) {
+            oldAnteil.setVisible(false);
+            newAnteileField.setVisible(false);
+            gesamtAnteil.setVisible(false);
             strategieLabel.setText(String.valueOf(investment.getStrategie()));
-        else
+        } else {
             strategieLabel.setVisible(false);
-        oldEinzahlungLabel.setText(String.valueOf(investment.getEinzahlung()));
+        }
+        oldEinzahlung.setText(String.valueOf(investment.getEinzahlung()));
+        oldAnteil.setText(String.valueOf(investment.getAnteile()));
     }
 
     public void goBack() {
@@ -63,8 +70,20 @@ public class EingabeController {
         stage.show();
     }
 
-    public void speichern(ActionEvent actionEvent) {
-        System.out.println(einzahlungField.getText() + " <- neu || alt -> " + investment.getEinzahlung());
+    public void speichernEinzahlung(ActionEvent actionEvent) {
+
+        double oldEinzahlungValue = Double.parseDouble(oldEinzahlung.getText());
+        double newEinzahlungValue = Double.parseDouble(newEinzahlung.getText());
+        double gesamtEinzahlungValue = oldEinzahlungValue + newEinzahlungValue;
+        gesamtEinzahlung.setText("Einzahlung: " + gesamtEinzahlungValue);
+    }
+
+    public void speichernAnteil(ActionEvent actionEvent) {
+
+        double oldAnteilValue = Double.parseDouble(oldAnteil.getText());
+        double newAnteilValue = Double.parseDouble(newAnteileField.getText());
+        double gesamtAnteilValue = oldAnteilValue + newAnteilValue;
+        gesamtAnteil.setText("Anteile: " + gesamtAnteilValue);
     }
 }
 

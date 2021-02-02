@@ -47,17 +47,17 @@
             <children>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2">
                     <children>
-                        <Label id="PNRName" fx:id="pnrNameLabel" layoutX="14.0" layoutY="24.0" prefHeight="52.0" prefWidth="251.0" text="PNRName">
+                        <Label fx:id="pnrNameLabel" layoutX="14.0" layoutY="24.0" prefHeight="52.0" prefWidth="251.0" text="PNRName">
                             <font>
                                 <Font size="30.0" />
                             </font>
                         </Label>
-                        <Label id="Einzahlung" fx:id="einzahlungLabel" layoutX="452.0" layoutY="24.0" prefHeight="52.0" prefWidth="237.0" text="Einzahlung">
+                        <Label fx:id="einzahlungLabel" layoutX="452.0" layoutY="24.0" prefHeight="52.0" prefWidth="237.0" text="Einzahlung">
                             <font>
                                 <Font size="30.0" />
                             </font>
                         </Label>
-                        <Label id="Ges.AktuellerStand" fx:id="gesStandLabel" layoutX="826.0" layoutY="24.0" prefHeight="52.0" prefWidth="265.0" text="Ges.AktuellerStand">
+                        <Label fx:id="gesStandLabel" layoutX="826.0" layoutY="24.0" prefHeight="52.0" prefWidth="265.0" text="Ges.AktuellerStand">
                             <font>
                                 <Font size="30.0" />
                             </font>
@@ -66,35 +66,35 @@
                 </AnchorPane>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                     <children>
-                        <Label id="ANRName" fx:id="anrNameLabel" layoutX="9.0" layoutY="5.0" prefHeight="132.0" prefWidth="180.0" text="ANRName">
+                        <Label fx:id="anrNameLabel" layoutX="9.0" layoutY="5.0" prefHeight="132.0" prefWidth="180.0" text="ANRName">
                             <font>
                                 <Font size="30.0" />
                             </font>
                         </Label>
-                        <Label id="Art" fx:id="artLabel" layoutX="9.0" layoutY="124.0" prefHeight="52.0" prefWidth="180.0" text="Art">
+                        <Label fx:id="artLabel" layoutX="9.0" layoutY="124.0" prefHeight="52.0" prefWidth="180.0" text="Art">
                             <font>
                                 <Font size="30.0" />
                             </font>
                         </Label>
-                        <Label id="Strategie" fx:id="strategieLabel" layoutX="817.0" layoutY="37.0" prefHeight="52.0" prefWidth="251.0" text="Strategie">
+                        <Label fx:id="strategieLabel" layoutX="817.0" layoutY="37.0" prefHeight="52.0" prefWidth="251.0" text="Strategie">
                             <font>
                                 <Font size="30.0" />
                             </font>
                         </Label>
-                        <TextField id="newEinzahlung" fx:id="newEinzahlung" layoutX="217.0" layoutY="51.0" onAction="#speichern" promptText="Einzahlung" />
-                        <Label id="old_Einzahlung" fx:id="old_Einzahlung" layoutX="217.0" layoutY="81.0" text="Einzahlung:" />
-                  <TextField id="newAnteile" fx:id="einzahlungField" layoutX="217.0" layoutY="137.0" onAction="#speichern" promptText="Anteile:" />
-                  <Label id="old_Anteile" fx:id="old_Anteil" layoutX="217.0" layoutY="175.0" text="Anteile" />
-                  <Label id="gesamt_Einzahlung" layoutX="450.0" layoutY="55.0" prefHeight="17.0" prefWidth="149.0" text="Gesamteinzahlung:" />
-                  <Label id="gesamt_Anteil" layoutX="450.0" layoutY="141.0" prefHeight="17.0" prefWidth="149.0" text="Gesamtanteil:" />
+                        <TextField fx:id="newEinzahlung" layoutX="217.0" layoutY="51.0" onAction="#speichernEinzahlung" promptText="Einzahlung" />
+                        <Label fx:id="oldEinzahlung" layoutX="217.0" layoutY="81.0" text="Einzahlung:" />
+                  <TextField fx:id="newAnteileField" layoutX="217.0" layoutY="137.0" onAction="#speichernAnteil" promptText="Anteile:" />
+                  <Label fx:id="oldAnteil" layoutX="217.0" layoutY="175.0" text="Anteile" />
+                  <Label fx:id="gesamtEinzahlung" layoutX="450.0" layoutY="55.0" prefHeight="17.0" prefWidth="149.0" text="Gesamteinzahlung:" />
+                  <Label fx:id="gesamtAnteil" layoutX="450.0" layoutY="141.0" prefHeight="17.0" prefWidth="149.0" text="Gesamtanteil:" />
                     </children>
                 </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <TextField id="aktueller_Stand" layoutX="214.0" layoutY="113.0" prefHeight="25.0" prefWidth="161.0" promptText="Aktueller Stand" />
-                  <DatePicker id="einzahlungDatum" layoutX="510.0" layoutY="113.0" prefHeight="25.0" prefWidth="199.0" promptText="Datum" />
-                  <Label id="gewinn" layoutX="865.0" layoutY="53.0" prefHeight="17.0" prefWidth="119.0" text="Gewinn:" />
-                  <Label id="rendite" layoutX="865.0" layoutY="117.0" prefHeight="17.0" prefWidth="119.0" text="Rendite:" />
+                  <TextField fx:id="newAktuelllerStand" layoutX="214.0" layoutY="113.0" prefHeight="25.0" prefWidth="161.0" promptText="Aktueller Stand" />
+                  <DatePicker fx:id="datum" layoutX="510.0" layoutY="113.0" prefHeight="25.0" prefWidth="199.0" promptText="Datum" />
+                  <Label fx:id="gewinn" layoutX="865.0" layoutY="46.0" prefHeight="17.0" prefWidth="119.0" text="Gewinn:" />
+                  <Label fx:id="rendite" layoutX="865.0" layoutY="117.0" prefHeight="17.0" prefWidth="119.0" text="Rendite:" />
                   <Label layoutX="214.0" layoutY="149.0" />
                </children>
             </AnchorPane>
