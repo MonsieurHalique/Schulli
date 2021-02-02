@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -16,10 +17,12 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         Parent root = fxmlLoader.load();
 
+
         LoginController loginController = fxmlLoader.<LoginController>getController();
         loginController.setStage(primaryStage);
 
         primaryStage.setTitle("Schulli");
+        primaryStage.getIcons().add(new Image("bild.png"));
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.setMinHeight(height);
         primaryStage.setMinWidth(width);
