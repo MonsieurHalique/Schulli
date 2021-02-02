@@ -4,6 +4,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class EingabeController {
     /**
@@ -101,6 +105,37 @@ public class EingabeController {
         rendite.setText(String.format("Rendite: %s", ((aktuellerStand / Double.parseDouble(oldEinzahlung.getText()) - 1 )* 100) + "%"));
     }
 
+    public void datepick(ActionEvent actionEvent) {
+        //fromat change to 2020-01-24
+
+       /* datum.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "yyyy-MM-dd";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                datum.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        */
+    }
+
     public void uebernahme(ActionEvent actionEvent) {
 
         //renditeValue an SQL (wird nicht benötigt)
@@ -112,10 +147,10 @@ public class EingabeController {
     }
 
     public void back(ActionEvent actionEvent) {
-
         //back to Mainstage
-
+        goBack();
     }
+
 
 
 }
