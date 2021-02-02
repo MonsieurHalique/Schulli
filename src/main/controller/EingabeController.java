@@ -2,6 +2,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -10,6 +11,12 @@ public class EingabeController {
      * * Attribute
      */
     private static DatenbankZugriff dz;
+   
+    
+    public MenuItem back;
+    public Label old_Anteil;
+    public Label old_Einzahlung;
+    public TextField newEinzahlung;
     private Stage stage;
     private Scene oldScene;
 
@@ -49,7 +56,7 @@ public class EingabeController {
         oldEinzahlungLabel.setText(String.valueOf(investment.getEinzahlung()));
     }
 
-    public void goBack(ActionEvent actionEvent) {
+    public void goBack() {
         stage.setScene(oldScene);
         stage.setMaximized(false);
         stage.centerOnScreen();
@@ -60,3 +67,6 @@ public class EingabeController {
         System.out.println(einzahlungField.getText() + " <- neu || alt -> " + investment.getEinzahlung());
     }
 }
+
+
+
