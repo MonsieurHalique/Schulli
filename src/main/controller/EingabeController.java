@@ -38,14 +38,12 @@ public class EingabeController {
     public Label strategieLabel;
     public Label gesamtAnteil;
     public Label gesamtEinzahlung;
-
     double aktuellerStand;
 
 
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
     public void setOldScene(Scene oldScene) {
         this.oldScene = oldScene;
     }
@@ -56,7 +54,6 @@ public class EingabeController {
         pnrNameLabel.setText(investment.getPnrName());
         einzahlungLabel.setText(String.valueOf(investment.getGesamtEinzahlung()));
         gesStandLabel.setText(String.valueOf(investment.getGesamtStand()));
-
         anrNameLabel.setText(investment.getAnrName());
         artLabel.setText(String.valueOf(investment.getArt()));
         if (investment.getArt() == Art.Robo || investment.getArt() == Art.Tagesgeld) {
@@ -71,7 +68,7 @@ public class EingabeController {
         oldAnteil.setText(String.valueOf(investment.getAnteile()));
     }
 
-    public void goBack() {
+    public void goBack(ActionEvent actionEvent) {
         stage.setScene(oldScene);
         stage.setMaximized(false);
         stage.centerOnScreen();
@@ -79,28 +76,21 @@ public class EingabeController {
     }
 
     public void speichernEinzahlung(ActionEvent actionEvent) {
-
-        double oldEinzahlungValue = Double.parseDouble(oldEinzahlung.getText());
-        double newEinzahlungValue = Double.parseDouble(newEinzahlung.getText());
-        double gesamtEinzahlungValue = oldEinzahlungValue + newEinzahlungValue;
+        double gesamtEinzahlungValue = Double.parseDouble(oldEinzahlung.getText()) + Double.parseDouble(newEinzahlung.getText());
         gesamtEinzahlung.setText("Einzahlung: " + gesamtEinzahlungValue);
     }
 
     public void speichernAnteil(ActionEvent actionEvent) {
-
-        double oldAnteilValue = Double.parseDouble(oldAnteil.getText());
-        double newAnteilValue = Double.parseDouble(newAnteileField.getText());
-        double gesamtAnteilValue = oldAnteilValue + newAnteilValue;
+        double gesamtAnteilValue = Double.parseDouble(oldAnteil.getText()) + Double.parseDouble(newAnteileField.getText());
         gesamtAnteil.setText("Anteile: " + gesamtAnteilValue);
     }
 
     public void speichernStand(ActionEvent actionEvent) {
         if (investment.getArt() != Art.Robo && investment.getArt() != Art.Tagesgeld) {
             aktuellerStand = Double.parseDouble(oldAnteil.getText()) * Double.parseDouble(newAktuelllerStand.getText());
-        }else{
+        } else {
             aktuellerStand = Double.parseDouble(newAktuelllerStand.getText());
         }
-
         gewinn.setText(String.format("Gewinn: %s€", (aktuellerStand - Double.parseDouble(oldEinzahlung.getText()))));
         rendite.setText(String.format("Rendite: %s", ((aktuellerStand / Double.parseDouble(oldEinzahlung.getText()) - 1 )* 100) + "%"));
     }
@@ -108,50 +98,14 @@ public class EingabeController {
     public void datepick(ActionEvent actionEvent) {
         //fromat change to 2020-01-24
 
-       /* datum.setConverter(new StringConverter<LocalDate>() {
-            String pattern = "yyyy-MM-dd";
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-
-            {
-                datum.setPromptText(pattern.toLowerCase());
-            }
-
-            @Override public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        });
-
-        */
     }
 
     public void uebernahme(ActionEvent actionEvent) {
-
-        //renditeValue an SQL (wird nicht benötigt)
-        //gewinnValue an SQL (wird nicht benötigt)
         //aktuellerStand an SQL
         //Datum übergeben
         //newAnteil übergeben wenn >0 && art != "Robo" && art != "Tagesgeld"
 
     }
-
-    public void back(ActionEvent actionEvent) {
-        //back to Mainstage
-        goBack();
-    }
-
-
 
 }
 
