@@ -10,24 +10,33 @@ public class Investments {
 
     private int pnr;
     private String pnrName;
-    private double gesamtEinzahlung;
-    private double gesamtStand;
+    private double oldGesamtEinzahlung;
+    private double newGesamtEinzahlung;
+    private double oldGesamtStand;
+    private double newGesamtStand;
 
     private int anr;
     private String anrName;
-    private double einzahlung;
+    private double oldEinzahlung;
+    private double newEinzahlung;
     private Art art;
     private double strategie;
-    private double anteile;
+    private double newAnteile;
+    private double oldAnteile;
     private boolean boolSparrate;
-    private double sparrate;
+    private double oldSparrate;
+    private double newSparrate;
     private double kosten;
     private double steuern;
 
-    private double aktuellerStand;
-    private double gewinn;
-    private double rendite;
-    private Date datum;
+    private double oldAktuellerStand;
+    private double newAktuellerStand;
+    private double oldGewinn;
+    private double newGewinn;
+    private double oldRendite;
+    private double newRendite;
+    private Date oldDatum;
+    private Date newDatum;
 
     /**
      * * Constructor
@@ -41,10 +50,6 @@ public class Investments {
     /**
      * * Getter
      */
-    public int getAnr() {
-        return anr;
-    }
-
     public int getPnr() {
         return pnr;
     }
@@ -53,20 +58,36 @@ public class Investments {
         return pnrName;
     }
 
-    public double getGesamtEinzahlung() {
-        return gesamtEinzahlung;
+    public double getOldGesamtEinzahlung() {
+        return oldGesamtEinzahlung;
     }
 
-    public double getGesamtStand() {
-        return gesamtStand;
+    public double getNewGesamtEinzahlung() {
+        return newGesamtEinzahlung;
+    }
+
+    public double getOldGesamtStand() {
+        return oldGesamtStand;
+    }
+
+    public double getNewGesamtStand() {
+        return newGesamtStand;
+    }
+
+    public int getAnr() {
+        return anr;
     }
 
     public String getAnrName() {
         return anrName;
     }
 
-    public double getEinzahlung() {
-        return einzahlung;
+    public double getOldEinzahlung() {
+        return oldEinzahlung;
+    }
+
+    public double getNewEinzahlung() {
+        return newEinzahlung;
     }
 
     public Art getArt() {
@@ -77,16 +98,24 @@ public class Investments {
         return strategie;
     }
 
-    public double getAnteile() {
-        return anteile;
+    public double getNewAnteile() {
+        return newAnteile;
+    }
+
+    public double getOldAnteile() {
+        return oldAnteile;
     }
 
     public boolean isBoolSparrate() {
         return boolSparrate;
     }
 
-    public double getSparrate() {
-        return sparrate;
+    public double getOldSparrate() {
+        return oldSparrate;
+    }
+
+    public double getNewSparrate() {
+        return newSparrate;
     }
 
     public double getKosten() {
@@ -97,49 +126,173 @@ public class Investments {
         return steuern;
     }
 
-    public double getAktuellerStand() {
-        return aktuellerStand;
+    public double getOldAktuellerStand() {
+        return oldAktuellerStand;
     }
 
-    public double getGewinn() {
-        return gewinn;
+    public double getNewAktuellerStand() {
+        return newAktuellerStand;
     }
 
-    public double getRendite() {
-        return rendite;
+    public double getOldGewinn() {
+        return oldGewinn;
     }
 
-    public Date getDatum() {
-        return datum;
+    public double getNewGewinn() {
+        return newGewinn;
+    }
+
+    public double getOldRendite() {
+        return oldRendite;
+    }
+
+    public double getNewRendite() {
+        return newRendite;
+    }
+
+    public Date getOldDatum() {
+        return oldDatum;
+    }
+
+    public Date getNewDatum() {
+        return newDatum;
     }
 
     /**
      * * Setter
      */
+    public void setPnr(int pnr) {
+        this.pnr = pnr;
+    }
+
+    public void setPnrName(String pnrName) {
+        this.pnrName = pnrName;
+    }
+
+    public void setOldGesamtEinzahlung(double oldGesamtEinzahlung) {
+        this.oldGesamtEinzahlung = oldGesamtEinzahlung;
+    }
+
+    public void setNewGesamtEinzahlung(double newGesamtEinzahlung) {
+        this.newGesamtEinzahlung = newGesamtEinzahlung;
+    }
+
+    public void setOldGesamtStand(double oldGesamtStand) {
+        this.oldGesamtStand = oldGesamtStand;
+    }
+
+    public void setNewGesamtStand(double newGesamtStand) {
+        this.newGesamtStand = newGesamtStand;
+    }
+
+    public void setAnr(int anr) {
+        this.anr = anr;
+    }
+
+    public void setAnrName(String anrName) {
+        this.anrName = anrName;
+    }
+
+    public void setOldEinzahlung(double oldEinzahlung) {
+        this.oldEinzahlung = oldEinzahlung;
+    }
+
+    public void setNewEinzahlung(double newEinzahlung) {
+        this.newEinzahlung = newEinzahlung;
+    }
+
+    public void setArt(Art art) {
+        this.art = art;
+    }
+
+    public void setStrategie(double strategie) {
+        this.strategie = strategie;
+    }
+
+    public void setNewAnteile(double newAnteile) {
+        this.newAnteile = newAnteile;
+    }
+
+    public void setOldAnteile(double oldAnteile) {
+        this.oldAnteile = oldAnteile;
+    }
+
+    public void setBoolSparrate(boolean boolSparrate) {
+        this.boolSparrate = boolSparrate;
+    }
+
+    public void setOldSparrate(double oldSparrate) {
+        this.oldSparrate = oldSparrate;
+    }
+
+    public void setNewSparrate(double newSparrate) {
+        this.newSparrate = newSparrate;
+    }
+
+    public void setKosten(double kosten) {
+        this.kosten = kosten;
+    }
+
+    public void setSteuern(double steuern) {
+        this.steuern = steuern;
+    }
+
+    public void setOldAktuellerStand(double oldAktuellerStand) {
+        this.oldAktuellerStand = oldAktuellerStand;
+    }
+
+    public void setNewAktuellerStand(double newAktuellerStand) {
+        this.newAktuellerStand = newAktuellerStand;
+    }
+
+    public void setOldGewinn(double oldGewinn) {
+        this.oldGewinn = oldGewinn;
+    }
+
+    public void setNewGewinn(double newGewinn) {
+        this.newGewinn = newGewinn;
+    }
+
+    public void setOldRendite(double oldRendite) {
+        this.oldRendite = oldRendite;
+    }
+
+    public void setNewRendite(double newRendite) {
+        this.newRendite = newRendite;
+    }
+
+    public void setOldDatum(Date oldDatum) {
+        this.oldDatum = oldDatum;
+    }
+
+    public void setNewDatum(Date newDatum) {
+        this.newDatum = newDatum;
+    }
+
     public void setPortfolio(String name, double einzahlung, double aktuellerStand) {
         this.pnrName = name;
-        this.gesamtEinzahlung = einzahlung;
-        this.gesamtStand = aktuellerStand;
+        this.oldGesamtEinzahlung = einzahlung;
+        this.oldGesamtStand = aktuellerStand;
 
     }
 
     public void setInvestments(String anrName, double einzahlung, Art art, double strategie, double anteile, boolean boolSparrate, double sparrate, double kosten, double steuern) {
         this.anrName = anrName;
-        this.einzahlung = einzahlung;
+        this.oldEinzahlung = einzahlung;
         this.art = art;
         this.strategie = strategie;
-        this.anteile = anteile;
+        this.oldAnteile = anteile;
         this.boolSparrate = boolSparrate;
-        this.sparrate = sparrate;
+        this.oldSparrate = sparrate;
         this.kosten = kosten;
         this.steuern = steuern;
     }
 
     public void setDaten(double aktuellerStand, double gewinn, double rendite, Date datum) {
-        this.aktuellerStand = aktuellerStand;
-        this.gewinn = gewinn;
-        this.rendite = rendite;
-        this.datum = datum;
+        this.oldAktuellerStand = aktuellerStand;
+        this.oldGewinn = gewinn;
+        this.oldRendite = rendite;
+        this.oldDatum = datum;
     }
 
     public static Investments getInstance(int anr, int pnr) {
@@ -162,29 +315,5 @@ public class Investments {
 
     public static Investments getLastInstance() {
         return list.get(list.size() - 1);
-    }
-
-    @Override
-    public String toString() {
-        return "Investments{" +
-                "pnr=" + pnr +
-                ", pnrName='" + pnrName + '\'' +
-                ", gesamtEinzahlung=" + gesamtEinzahlung +
-                ", gesamtStand=" + gesamtStand +
-                ", anr=" + anr +
-                ", anrName='" + anrName + '\'' +
-                ", einzahlung=" + einzahlung +
-                ", art=" + art +
-                ", strategie=" + strategie +
-                ", anteile=" + anteile +
-                ", boolSparrate=" + boolSparrate +
-                ", sparrate=" + sparrate +
-                ", kosten=" + kosten +
-                ", steuern=" + steuern +
-                ", aktuellerStand=" + aktuellerStand +
-                ", gewinn=" + gewinn +
-                ", rendite=" + rendite +
-                ", datum=" + datum +
-                '}';
     }
 }

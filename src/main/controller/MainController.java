@@ -24,15 +24,19 @@ public class MainController {
     private int oldpnr = 0;
     private int oldanr = 0;
 
-    public TextField aktuellerStandField;
-    public Button okButton;
-    public Button changeButton;
-    public Button graphButton;
-    public ComboBox<String> portfolio;
+    public ComboBox<String> portfolioComboBox;
     public ProgressBar progressBar;
+
+    public TextField aktuellerStandField;
+
     public Label renditeLabel;
     public Label gewinnLabel;
+
     public ListView<String> investmentList;
+    public Button graphButton;
+
+    public Button okButton;
+    public Button changeButton;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -45,10 +49,10 @@ public class MainController {
 
             Schulli[] value_arr = {Portfolio.name};
 
-            portfolio.setPromptText("Wähle Anlage!");
+            portfolioComboBox.setPromptText("Wähle Anlage!");
             ResultSet rs = dz.fkt_Lesen(value_arr, Database.portfolio);
             while (rs.next()) {
-                portfolio.getItems().add(rs.getString(1));
+                portfolioComboBox.getItems().add(rs.getString(1));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -58,7 +62,7 @@ public class MainController {
     public void portfolioEnter(ActionEvent actionEvent) {
         investmentList.getItems().clear();
 
-        pnr = portfolio.getSelectionModel().getSelectedIndex() + 1;
+        pnr = portfolioComboBox.getSelectionModel().getSelectedIndex() + 1;
         if (pnr != oldpnr) {
             anr = 0;
             oldpnr = pnr;
@@ -81,9 +85,9 @@ public class MainController {
         anr = investmentList.getSelectionModel().getSelectedIndex() + 1;
         Investments.getInstance(anr, pnr);
         setInvestment();
-        aktuellerStandField.setText(String.valueOf(Investments.getLastInstance().getAktuellerStand()));
-        renditeLabel.setText(String.format("Rendite: %s", Investments.getLastInstance().getRendite() * 100) + "%");
-        gewinnLabel.setText(String.format("Gewinn: %s€", Investments.getLastInstance().getGewinn()));
+        aktuellerStandField.setText(String.valueOf(Investments.getLastInstance().getOldAktuellerStand()));
+        renditeLabel.setText(String.format("Rendite: %.2f%%", Investments.getLastInstance().getOldRendite() * 100));
+        gewinnLabel.setText(String.format("Gewinn: %.2f€", Investments.getLastInstance().getOldGewinn()));
     }
 
     public void openGraph(ActionEvent actionEvent) {

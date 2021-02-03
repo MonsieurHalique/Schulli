@@ -20,9 +20,10 @@ public class GraphController {
     private int pnr = 0;
     private int anr = 0;
 
+    public LineChart<String, Number> lineChart;
+
     public Button backButton;
     public Button closeButton;
-    public LineChart<String, Number> lineChart;
 
     public void setStage(Stage stage) {
         this.stage = stage;
