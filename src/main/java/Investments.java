@@ -8,6 +8,7 @@ public class Investments {
      */
     private static List<Investments> list = new ArrayList<Investments>();
 
+    private int lfdnr;
     private int pnr;
     private String pnrName;
     private double oldGesamtEinzahlung;
@@ -47,9 +48,15 @@ public class Investments {
         list.add(this);
     }
 
+
+
     /**
      * * Getter
      */
+    public int getLfdnr() {
+        return lfdnr;
+    }
+
     public int getPnr() {
         return pnr;
     }
@@ -158,9 +165,15 @@ public class Investments {
         return newDatum;
     }
 
+
+
     /**
      * * Setter
      */
+    public void setLfdnr(int lfdnr) {
+        this.lfdnr = lfdnr;
+    }
+
     public void setPnr(int pnr) {
         this.pnr = pnr;
     }
