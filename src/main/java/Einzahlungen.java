@@ -4,12 +4,20 @@ import java.util.List;
 
 public class Einzahlungen {
 
+    private static List<Einzahlungen> list = new ArrayList<Einzahlungen>();
+
     private  int invlfdnr;
     private double einzahlungen;
     private Date datum;
     private double anteile;
 
-    private Investments investment = Investments.getLastInstance();
+    private Einzahlungen(int invlfdnr, Date datum, double anteile, double einzahlungen) {
+        this.invlfdnr = invlfdnr;
+        this.einzahlungen = einzahlungen;
+        this.datum = datum;
+        this.anteile = anteile;
+        list.add(this);
+    }
 
     // TODO: 04.02.2021
     //private Einzahlung einzahlung = Einzahlungen.getLastInstance();
@@ -52,7 +60,7 @@ public class Einzahlungen {
         this.invlfdnr = invlfdnr;
     }
 
-    public void setEinzahlungen(double einzahlungen) {
+    public void setEinzahlungen(int anInt, double aDouble, Date date, double einzahlungen) {
         this.einzahlungen = einzahlungen;
     }
 
@@ -62,5 +70,28 @@ public class Einzahlungen {
 
     public void setAnteile(double anteile) {
         this.anteile = anteile;
+    }
+
+
+    public static Einzahlungen getInstance(int invlfdnr, Date datum, double anteile, double einzahlungen) {
+        Einzahlungen tmp;
+
+        if (list.isEmpty()) {
+            return new Einzahlungen(invlfdnr,datum,anteile,einzahlungen);
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            tmp = list.get(i);
+            if (tmp.invlfdnr == invlfdnr && tmp.datum == datum) {
+                list.remove(i);
+                list.add(tmp);
+                return tmp;
+            }
+        }
+        return new Einzahlungen(invlfdnr,datum,anteile,einzahlungen);
+    }
+
+    public static Einzahlungen getLastInstance() {
+        return list.get(list.size() - 1);
     }
 }

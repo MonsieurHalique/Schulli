@@ -120,15 +120,14 @@ public class MainController {
         setInvestmentEinzahlung();
     }
 
+    // TODO: 07.02.2021 prüfen was Schulli für scheiße baut 
     private void setInvestmentEinzahlung() {
-        Schulli[] value_arr = {Einzahlung.lfdnr, Einzahlung.invlfndr, Einzahlung.einzahlungen, Einzahlung.datum, Einzahlung.anteile};
+        Schulli[] value_arr = {Einzahlung.invlfndr, Einzahlung.einzahlungen, Einzahlung.datum, Einzahlung.anteile};
         String where = Einzahlung.invlfndr + " = " + Investment.lfdnr + "and" + Daten.datum + "<=" + Einzahlung.datum;
         try {
             ResultSet rs = dz.fkt_Lesen(value_arr, Database.einzahlung, where);
             rs.next();
-            // TODO: 07.02.2021
-
-
+            Einzahlungen.getLastInstance().setEinzahlungen(rs.getInt(1), rs.getDouble(2), rs.getDate(3),rs.getDouble(4));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
