@@ -117,6 +117,21 @@ public class MainController {
         setInvestmentPortfolio();
         setInvestmentInvestments();
         setInvestmentDaten();
+        setInvestmentEinzahlung();
+    }
+
+    private void setInvestmentEinzahlung() {
+        Schulli[] value_arr = {Einzahlung.lfdnr, Einzahlung.invlfndr, Einzahlung.einzahlungen, Einzahlung.datum, Einzahlung.anteile};
+        String where = Einzahlung.invlfndr + " = " + Investment.lfdnr + "and" + Daten.datum + "<=" + Einzahlung.datum;
+        try {
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.einzahlung, where);
+            rs.next();
+            // TODO: 07.02.2021
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private void setInvestmentPortfolio() {

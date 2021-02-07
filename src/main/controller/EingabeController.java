@@ -88,6 +88,15 @@ public class EingabeController {
         stage.show();
     }
 
+
+    public void berechnung(){
+
+
+
+    }
+
+
+
     public void speichernEinzahlung(ActionEvent actionEvent) {
         if (newEinzahlungField.getText() != "") {
             investment.setNewEinzahlung(investment.getOldEinzahlung() + Double.parseDouble(newEinzahlungField.getText()));

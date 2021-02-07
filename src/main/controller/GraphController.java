@@ -50,7 +50,7 @@ public class GraphController {
 
             Schulli[] value_arr = {Daten.rendite, Daten.gewinn, Daten.datum};
             String where = Daten.anr + " = " + anr + " AND " + Daten.pnr + " = " + pnr;
-            Schulli[] orderby = {Daten.lfdnr};
+            Schulli[] orderby = {Daten.datum};
 
             XYChart.Series seriesRendite = new XYChart.Series();
             XYChart.Series seriesGewinn = new XYChart.Series();
