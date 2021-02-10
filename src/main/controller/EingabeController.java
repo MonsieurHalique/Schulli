@@ -2,11 +2,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import javax.swing.*;
 import java.sql.Date;
@@ -68,21 +65,19 @@ public class EingabeController {
 
         anrNameLabel.setText(investment.getAnrName());
         artLabel.setText(String.valueOf(investment.getArt()));
+
         if (investment.getArt() == Art.Robo || investment.getArt() == Art.Tagesgeld) {
-            oldAnteilLabel.setVisible(false);
-            newAnteileField.setVisible(false);
-            gesamtAnteilLabel.setVisible(false);
             strategieLabel.setText(String.valueOf(investment.getStrategie()));
         } else {
-            strategieLabel.setVisible(false);
             oldAnteilLabel.setText(String.valueOf(investment.getOldAnteile()));
             gesamtAnteilLabel.setText(String.format("Anteile: %.2f", investment.getOldAnteile()));
         }
         oldEinzahlungLabel.setText(String.valueOf(investment.getOldEinzahlung()));
-        gesamtEinzahlungLabel.setText(String.format("Einzahlung: %.2f€", investment.getOldEinzahlung()));
 
         newAktuelllerStandField.setText(String.valueOf(investment.getOldAktuellerStand()));
         datumDatePicker.setPromptText(String.valueOf(investment.getOldDatum()));
+
+        drucken();
     }
 
     public void goBack(ActionEvent actionEvent) {
@@ -93,48 +88,38 @@ public class EingabeController {
     }
 
     public void speichernEinzahlung(ActionEvent actionEvent) {
-        if (newEinzahlungField.getText() != "") {
+        if (newEinzahlungField.getText().equals(""))
+            investment.setNewEinzahlung(0);
+        else if (Double.parseDouble(newEinzahlungField.getText()) == 0)
+            investment.setNewEinzahlung(0);
+        else
             investment.setNewEinzahlung(investment.getOldEinzahlung() + Double.parseDouble(newEinzahlungField.getText()));
-            gesamtEinzahlungLabel.setTextFill(Color.web("#e00909"));
-        } else {
-            investment.setNewEinzahlung(investment.getOldEinzahlung());
-            gesamtEinzahlungLabel.setTextFill(Color.web("0x333333ff"));
-        }
-        gesamtEinzahlungLabel.setText(String.format("Einzahlung: %.2f€", investment.getNewEinzahlung()));
+        drucken();
     }
 
     public void speichernAnteil(ActionEvent actionEvent) {
-        if (newAnteileField.getText() != "") {
+        if (newAnteileField.getText().equals(""))
+            investment.setNewAnteile(0);
+        else if (Double.parseDouble(newAnteileField.getText()) == 0)
+            investment.setNewAnteile(0);
+        else
             investment.setNewAnteile(investment.getOldAnteile() + Double.parseDouble(newAnteileField.getText()));
-            gesamtAnteilLabel.setTextFill(Color.web("#e00909"));
-        } else {
-            investment.setNewAnteile(investment.getOldAnteile());
-            gesamtAnteilLabel.setTextFill(Color.web("0x333333ff"));
-        }
-        gesamtAnteilLabel.setText(String.format("Anteile: %.2f", investment.getNewAnteile()));
+        drucken();
     }
 
     public void speichernStand(ActionEvent actionEvent) {
+        if (newAktuelllerStandField.getText().equals("")) {
+            investment.setNewAktuellerStand(0);
+            return;
+        }
+
         speichernEinzahlung(actionEvent);
         speichernAnteil(actionEvent);
-        if (investment.getArt() != Art.Robo && investment.getArt() != Art.Tagesgeld && newAktuelllerStandField.getText() != "") {
+        if (investment.getArt() != Art.Robo && investment.getArt() != Art.Tagesgeld)
             investment.setNewAktuellerStand(investment.getNewAnteile() * Double.parseDouble(newAktuelllerStandField.getText()));
-            gewinnLabel.setTextFill(Color.web("#e00909"));
-            renditeLabel.setTextFill(Color.web("#e00909"));
-        } else if (newAktuelllerStandField.getText() != "") {
+        else
             investment.setNewAktuellerStand(Double.parseDouble(newAktuelllerStandField.getText()));
-            gewinnLabel.setTextFill(Color.web("#e00909"));
-            renditeLabel.setTextFill(Color.web("#e00909"));
-        } else {
-            investment.setNewAktuellerStand(investment.getOldAktuellerStand());
-            gewinnLabel.setTextFill(Color.web("0x333333ff"));
-            renditeLabel.setTextFill(Color.web("0x333333ff"));
-        }
-        investment.setNewGewinn(investment.getNewAktuellerStand() - investment.getNewEinzahlung());
-        investment.setNewRendite((investment.getNewAktuellerStand() / investment.getNewEinzahlung() - 1) * 100);
-
-        gewinnLabel.setText(String.format("Gewinn: %.2f€", investment.getNewGewinn()));
-        renditeLabel.setText(String.format("Rendite: %.2f%%", investment.getNewRendite()));
+        drucken();
     }
 
     public void datepick(ActionEvent actionEvent) {
@@ -161,6 +146,94 @@ public class EingabeController {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public void drucken() {
+        feldpruefung();
+
+        if (investment.getNewAnteile() > 0) {
+            gesamtAnteilLabel.setTextFill(Color.web("#e00909"));
+            gesamtAnteilLabel.setText(String.format("Anteile: %.2f", investment.getNewAnteile()));
+        } else {
+            gesamtAnteilLabel.setTextFill(Color.web("0x333333ff"));
+            gesamtAnteilLabel.setText(String.format("Anteile: %.2f", investment.getOldAnteile()));
+        }
+
+        if (investment.getNewDatumEinzahlung() > 0) {
+            gesamtEinzahlungLabel.setTextFill(Color.web("#e00909"));
+            gesamtEinzahlungLabel.setText(String.format("Einzahlung: %.2f€", investment.getNewDatumEinzahlung()));
+        } else if (investment.getNewEinzahlung() > 0) {
+            gesamtEinzahlungLabel.setTextFill(Color.web("#e00909"));
+            gesamtEinzahlungLabel.setText(String.format("Einzahlung: %.2f€", investment.getNewEinzahlung()));
+        } else {
+            gesamtEinzahlungLabel.setTextFill(Color.web("0x333333ff"));
+            gesamtEinzahlungLabel.setText(String.format("Einzahlung: %.2f€", investment.getOldEinzahlung()));
+        }
+
+        berechnen();
+
+        if (investment.getNewAktuellerStand() > 0) {
+            gewinnLabel.setTextFill(Color.web("#e00909"));
+            renditeLabel.setTextFill(Color.web("#e00909"));
+            gewinnLabel.setText(String.format("Gewinn: %.2f€", investment.getNewGewinn()));
+            renditeLabel.setText(String.format("Rendite: %.2f%%", investment.getNewRendite()));
+        } else {
+            gewinnLabel.setTextFill(Color.web("0x333333ff"));
+            renditeLabel.setTextFill(Color.web("0x333333ff"));
+            gewinnLabel.setText(String.format("Gewinn: %.2f€", investment.getOldGewinn()));
+            renditeLabel.setText(String.format("Rendite: %.2f%%", investment.getOldRendite()));
+        }
+    }
+
+    public void berechnen() {
+        if (investment.getNewAktuellerStand() <= 0) {
+            investment.setNewGewinn(0);
+            investment.setNewRendite(0);
+            return;
+        }
+
+        double tmpEinzahlung = 0;
+        double tmpAnteile = 1;
+
+        if (investment.getNewDatumEinzahlung() > 0) {
+            tmpEinzahlung = investment.getNewDatumEinzahlung();
+        } else {
+            if (investment.getNewEinzahlung() > 0) {
+                tmpEinzahlung = investment.getNewEinzahlung();
+            } else {
+                tmpEinzahlung = investment.getOldEinzahlung();
+            }
+        }
+        if (investment.getArt() != Art.Robo && investment.getArt() != Art.Tagesgeld) {
+            if (investment.getNewDatumAnteile() > 0) {
+                tmpAnteile = investment.getNewDatumAnteile();
+            } else {
+                if (investment.getNewAnteile() > 0) {
+                    tmpAnteile = investment.getNewAnteile();
+                } else {
+                    tmpAnteile = investment.getOldAnteile();
+                }
+            }
+        }
+        investment.setNewGewinn(investment.getNewAktuellerStand() * tmpAnteile - tmpEinzahlung);
+        investment.setNewRendite(((investment.getNewAktuellerStand() * tmpAnteile) / tmpEinzahlung - 1) * 100);
+    }
+
+    public void feldpruefung() {
+        if (investment.getArt() == Art.Robo || investment.getArt() == Art.Tagesgeld) {
+            oldAnteilLabel.setVisible(false);
+            newAnteileField.setVisible(false);
+            gesamtAnteilLabel.setVisible(false);
+            strategieLabel.setVisible(true);
+        } else {
+            oldAnteilLabel.setVisible(true);
+            newAnteileField.setVisible(true);
+            gesamtAnteilLabel.setVisible(true);
+            strategieLabel.setVisible(false);
+        }
+
+        newEinzahlungField.setDisable(investment.getNewDatumEinzahlung() > 0);
+        newAnteileField.setDisable(investment.getNewDatumAnteile() > 0);
     }
 
     public void uebernahme(ActionEvent actionEvent) {

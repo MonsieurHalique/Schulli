@@ -120,19 +120,6 @@ public class MainController {
         setInvestmentDaten();
     }
 
-    // TODO: 07.02.2021 prüfen was Schulli für scheiße baut 
-    private void setInvestmentEinzahlung() {
-        Schulli[] value_arr = {Einzahlung.invlfndr, Einzahlung.einzahlungen, Einzahlung.datum, Einzahlung.anteile};
-        String where = Einzahlung.invlfndr + " = " + Investment.lfdnr + "and" + Daten.datum + "<=" + Einzahlung.datum;
-        try {
-            ResultSet rs = dz.fkt_Lesen(value_arr, Database.einzahlung, where);
-            rs.next();
-            Einzahlungen.getLastInstance().setEinzahlungen(rs.getInt(1), rs.getDouble(2), rs.getDate(3),rs.getDouble(4));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
     private void setInvestmentPortfolio() {
         Schulli[] value_arr = {Portfolio.name, Portfolio.einzahlung, Portfolio.aktueller_Stand};
         String where = Portfolio.pnr + " = " + pnr;
@@ -160,14 +147,14 @@ public class MainController {
     }
 
     private void setInvestmentDaten() {
-        Schulli[] value_arr = {Daten.aktueller_stand, Daten.gewinn, Daten.rendite, Daten.datum};
+        Schulli[] value_arr = {Daten.lfdnr, Daten.aktueller_stand, Daten.gewinn, Daten.rendite, Daten.datum};
         String where = Daten.anr + " = " + anr + " and " + Daten.pnr + " = " + pnr;
         Schulli[] orderby = {Daten.lfdnr};
 
         try {
             ResultSet rs = dz.fkt_Lesen(value_arr, Database.daten, where, orderby, true);
             rs.next();
-            Investments.getLastInstance().setDaten(rs.getDouble(1), rs.getDouble(2), rs.getDouble(3), rs.getDate(4));
+            Investments.getLastInstance().setDaten(rs.getInt(1), rs.getDouble(2), rs.getDouble(3), rs.getDouble(4), rs.getDate(5));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

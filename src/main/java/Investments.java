@@ -8,7 +8,6 @@ public class Investments {
      */
     private static List<Investments> list = new ArrayList<Investments>();
 
-    private int lfdnr;
     private int pnr;
     private String pnrName;
     private double oldGesamtEinzahlung;
@@ -16,6 +15,7 @@ public class Investments {
     private double oldGesamtStand;
     private double newGesamtStand;
 
+    private int invLFDNR;
     private int anr;
     private String anrName;
     private double oldEinzahlung;
@@ -30,6 +30,7 @@ public class Investments {
     private double kosten;
     private double steuern;
 
+    private int datLFDNR;
     private double oldAktuellerStand;
     private double newAktuellerStand;
     private double oldGewinn;
@@ -38,6 +39,8 @@ public class Investments {
     private double newRendite;
     private Date oldDatum;
     private Date newDatum;
+    private double newDatumEinzahlung;
+    private double newDatumAnteile;
 
     /**
      * * Constructor
@@ -49,13 +52,9 @@ public class Investments {
     }
 
 
-
     /**
      * * Getter
      */
-    public int getLfdnr() {
-        return lfdnr;
-    }
 
     public int getPnr() {
         return pnr;
@@ -79,6 +78,10 @@ public class Investments {
 
     public double getNewGesamtStand() {
         return newGesamtStand;
+    }
+
+    public int getInvLFDNR() {
+        return invLFDNR;
     }
 
     public int getAnr() {
@@ -133,6 +136,10 @@ public class Investments {
         return steuern;
     }
 
+    public int getDatLFDNR() {
+        return datLFDNR;
+    }
+
     public double getOldAktuellerStand() {
         return oldAktuellerStand;
     }
@@ -165,14 +172,18 @@ public class Investments {
         return newDatum;
     }
 
+    public double getNewDatumEinzahlung() {
+        return newDatumEinzahlung;
+    }
+
+    public double getNewDatumAnteile() {
+        return newDatumAnteile;
+    }
 
 
     /**
      * * Setter
      */
-    public void setLfdnr(int lfdnr) {
-        this.lfdnr = lfdnr;
-    }
 
     public void setPnr(int pnr) {
         this.pnr = pnr;
@@ -196,6 +207,10 @@ public class Investments {
 
     public void setNewGesamtStand(double newGesamtStand) {
         this.newGesamtStand = newGesamtStand;
+    }
+
+    public void setInvLFDNR(int invLFDNR) {
+        this.invLFDNR = invLFDNR;
     }
 
     public void setAnr(int anr) {
@@ -250,6 +265,10 @@ public class Investments {
         this.steuern = steuern;
     }
 
+    public void setDatLFDNR(int datLFDNR) {
+        this.datLFDNR = datLFDNR;
+    }
+
     public void setOldAktuellerStand(double oldAktuellerStand) {
         this.oldAktuellerStand = oldAktuellerStand;
     }
@@ -282,6 +301,14 @@ public class Investments {
         this.newDatum = newDatum;
     }
 
+    public void setNewDatumEinzahlung(double newDatumEinzahlung) {
+        this.newDatumEinzahlung = newDatumEinzahlung;
+    }
+
+    public void setNewDatumAnteile(double newDatumAnteile) {
+        this.newDatumAnteile = newDatumAnteile;
+    }
+
     public void setPortfolio(String name, double einzahlung, double aktuellerStand) {
         this.pnrName = name;
         this.oldGesamtEinzahlung = einzahlung;
@@ -302,7 +329,8 @@ public class Investments {
         this.steuern = steuern;
     }
 
-    public void setDaten(double aktuellerStand, double gewinn, double rendite, Date datum) {
+    public void setDaten(int datLFDNR, double aktuellerStand, double gewinn, double rendite, Date datum) {
+        this.datLFDNR = datLFDNR;
         this.oldAktuellerStand = aktuellerStand;
         this.oldGewinn = gewinn;
         this.oldRendite = rendite;
