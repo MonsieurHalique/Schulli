@@ -10,9 +10,8 @@ import javafx.util.StringConverter;
 
 import javax.swing.*;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class EingabeController {
     /**
@@ -57,6 +56,11 @@ public class EingabeController {
 
     @FXML
     public void initialize() {
+        try {
+            dz = DatenbankZugriff.getInstance();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         investment = Investments.getLastInstance();
         pnrNameLabel.setText(investment.getPnrName());
         einzahlungLabel.setText(String.valueOf(investment.getOldGesamtEinzahlung()));
@@ -87,15 +91,6 @@ public class EingabeController {
         stage.centerOnScreen();
         stage.show();
     }
-
-
-    public void berechnung(){
-
-
-
-    }
-
-
 
     public void speichernEinzahlung(ActionEvent actionEvent) {
         if (newEinzahlungField.getText() != "") {
@@ -143,10 +138,29 @@ public class EingabeController {
     }
 
     public void datepick(ActionEvent actionEvent) {
-        if (datumDatePicker.getValue() == null)
+        if (datumDatePicker.getValue() == null) {
             investment.setNewDatum(null);
-        else
+            investment.setNewDatumEinzahlung(0);
+            investment.setNewDatumAnteile(0);
+        } else {
             investment.setNewDatum(Date.valueOf(datumDatePicker.getValue().getYear() + "-" + datumDatePicker.getValue().getMonthValue() + "-" + datumDatePicker.getValue().getDayOfMonth()));
+            getFittingEinzahlung();
+        }
+        drucken();
+    }
+
+    private void getFittingEinzahlung() {
+        Schulli[] value_arr = {Einzahlung.einzahlungen, Einzahlung.anteile};
+        String where = Einzahlung.invlfdnr + " = " + investment.getInvLFDNR() + " and " + Einzahlung.datum + " <= '" + investment.getNewDatum() + "'";
+        Schulli[] orderBy = {Einzahlung.datum};
+        try {
+            ResultSet rs = dz.fkt_Lesen(value_arr, Database.einzahlung, where, orderBy, true);
+            rs.next();
+            investment.setNewDatumEinzahlung(rs.getDouble(1));
+            investment.setNewDatumAnteile(rs.getDouble(2));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public void uebernahme(ActionEvent actionEvent) {
@@ -155,24 +169,22 @@ public class EingabeController {
         if (investment.getOldEinzahlung() != investment.getNewEinzahlung())
             input = JOptionPane.showConfirmDialog(null, String.format("Neue Einzahlung speichern\nAlter Wert: %.2f€\nNeuer Wert: %.2f€", investment.getOldEinzahlung(), investment.getNewEinzahlung()), "Einzahlung", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-        if (input == 0){
+        if (input == 0) {
             System.out.println("Speichern");
             input = 1;
             // TODO: 04.02.2021 Speichern
-        }
-        else
+        } else
             System.out.println("Nicht Speichern");
         // TODO: 04.02.2021 Speichern
 
         if (investment.getOldAnteile() != investment.getNewAnteile())
             input = JOptionPane.showConfirmDialog(null, String.format("Neue Anteile speichern\nAlter Wert: %.2f\nNeuer Wert: %.2f", investment.getOldAnteile(), investment.getNewAnteile()), "Anteile", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-        if (input == 0){
+        if (input == 0) {
             System.out.println("Speichern");
             // TODO: 04.02.2021 Speichern
             input = 1;
-        }
-        else
+        } else
             System.out.println("Nicht Speichern");
         // TODO: 04.02.2021 Speichern
 
@@ -181,12 +193,11 @@ public class EingabeController {
         else if (investment.getOldAktuellerStand() != investment.getNewAktuellerStand() && investment.getNewDatum() != null)
             input = JOptionPane.showConfirmDialog(null, String.format("Wollen sie den neuen Stand (%.2f€) den %s eintragen", investment.getNewAktuellerStand(), investment.getNewDatum()), "Aktueller", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-        if (input == 0){
+        if (input == 0) {
             System.out.println("Speichern");
             input = 1;
             // TODO: 04.02.2021 Speichern
-        }
-        else
+        } else
             System.out.println("Nicht Speichern");
         // TODO: 04.02.2021 Speichern
     }

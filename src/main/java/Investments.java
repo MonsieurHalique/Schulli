@@ -289,7 +289,8 @@ public class Investments {
 
     }
 
-    public void setInvestments(String anrName, double einzahlung, Art art, double strategie, double anteile, boolean boolSparrate, double sparrate, double kosten, double steuern) {
+    public void setInvestments(int invLFDNR, String anrName, double einzahlung, Art art, double strategie, double anteile, boolean boolSparrate, double sparrate, double kosten, double steuern) {
+        this.invLFDNR = invLFDNR;
         this.anrName = anrName;
         this.oldEinzahlung = einzahlung;
         this.art = art;

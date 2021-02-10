@@ -80,6 +80,7 @@ public class DatenbankZugriff {
     public ResultSet fkt_Lesen(Schulli[] value_arr, Database database, String where) throws SQLException {
         String select = getString(value_arr, ", ");
         String query = String.format("Select %s from %s where %s", select, database, where);
+        System.out.println(query);
         rs = stmt.executeQuery(query);
         return rs;
     }

@@ -18,8 +18,8 @@ public class MainController {
     private static DatenbankZugriff dz;
     private Stage stage;
 
-    private Investments investment;
     private int pnr = 0;
+    private int invLFDNR = 0;
     private int anr = 0;
     private int oldpnr = 0;
     private int oldanr = 0;
@@ -64,6 +64,7 @@ public class MainController {
 
         pnr = portfolioComboBox.getSelectionModel().getSelectedIndex() + 1;
         if (pnr != oldpnr) {
+            invLFDNR = 0;
             anr = 0;
             oldpnr = pnr;
         }
@@ -117,7 +118,6 @@ public class MainController {
         setInvestmentPortfolio();
         setInvestmentInvestments();
         setInvestmentDaten();
-        setInvestmentEinzahlung();
     }
 
     // TODO: 07.02.2021 prüfen was Schulli für scheiße baut 
@@ -146,13 +146,14 @@ public class MainController {
     }
 
     private void setInvestmentInvestments() {
-        Schulli[] value_arr = {Investment.name, Investment.einzahlung, Investment.art, Investment.strategie, Investment.anteile, Investment.sparrate, Investment.sparrate_wert, Investment.kosten, Investment.steuern};
+        Schulli[] value_arr = {Investment.lfdnr, Investment.name, Investment.einzahlung, Investment.art, Investment.strategie, Investment.anteile, Investment.sparrate, Investment.sparrate_wert, Investment.kosten, Investment.steuern};
         String where = Investment.pnr + " = " + pnr + " and " + Investment.anr + " = " + anr;
         try {
             ResultSet rs = dz.fkt_Lesen(value_arr, Database.investments, where);
             rs.next();
-            Art tmpArt = Art.valueOf(rs.getString(3));
-            Investments.getLastInstance().setInvestments(rs.getString(1), rs.getDouble(2), tmpArt, rs.getDouble(4), rs.getDouble(5), rs.getBoolean(6), rs.getDouble(7), rs.getDouble(8), rs.getDouble(9));
+            Art tmpArt = Art.valueOf(rs.getString(4));
+            Investments.getLastInstance().setInvestments(rs.getInt(1), rs.getString(2), rs.getDouble(3), tmpArt, rs.getDouble(5), rs.getDouble(6), rs.getBoolean(7), rs.getDouble(8), rs.getDouble(9), rs.getDouble(10));
+            invLFDNR = Investments.getLastInstance().getInvLFDNR();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

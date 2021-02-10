@@ -1,6 +1,6 @@
 public enum Einzahlung implements Schulli {
     lfdnr,
-    invlfndr,
+    invlfdnr,
     einzahlungen,
     datum,
     anteile;
